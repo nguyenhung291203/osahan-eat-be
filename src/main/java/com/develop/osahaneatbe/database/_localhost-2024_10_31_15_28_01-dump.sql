@@ -1,0 +1,152 @@
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: osahan-eat
+-- ------------------------------------------------------
+-- Server version	8.3.0
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `accounts`
+--
+
+DROP TABLE IF EXISTS `accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `accounts` (
+  `id` varchar(255) NOT NULL,
+  `created_date` datetime(6) DEFAULT NULL,
+  `updated_date` datetime(6) DEFAULT NULL,
+  `faceboo_account_id` varchar(255) DEFAULT NULL,
+  `google_account_id` varchar(255) DEFAULT NULL,
+  `is_active` bit(1) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `username` varchar(10) NOT NULL,
+  `role_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UKk8h1bgqoplx0rkngj01pm1rgp` (`username`),
+  KEY `FKt3wava8ssfdspnh3hg4col3m1` (`role_id`),
+  CONSTRAINT `FKt3wava8ssfdspnh3hg4col3m1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounts`
+--
+
+LOCK TABLES `accounts` WRITE;
+/*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` VALUES ('347d00fa-8899-4a58-986a-519169c2ac5e','2024-10-31 10:16:56.255531','2024-10-31 10:16:56.255531',NULL,NULL,_binary '','$2a$10$gNKxXnvoPXjChxUEU73P1eSSg1tnhUtQsYAVvGDMi.GHtN7HdDKlW','0869885512',1),('88066095-3cf5-4b61-a884-28955eaae5b3','2024-10-31 10:44:34.837128','2024-10-31 10:44:34.837128',NULL,NULL,_binary '','$2a$10$vJR0nVoNeRviCPRpon2mB.xzB6Fu.rukBxImROOPJCxghvWFZ5fHm','0869885513',1);
+/*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `profiles`
+--
+
+DROP TABLE IF EXISTS `profiles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `profiles` (
+  `id` varchar(255) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `data_of_birth` date DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `full_name` varchar(100) NOT NULL,
+  `gender` bit(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UKlnk8iosvsrn5614xw3lgnybgk` (`email`),
+  CONSTRAINT `FKph94xatq3eb421xema3y7p7b8` FOREIGN KEY (`id`) REFERENCES `accounts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `profiles`
+--
+
+LOCK TABLES `profiles` WRITE;
+/*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
+INSERT INTO `profiles` VALUES ('347d00fa-8899-4a58-986a-519169c2ac5e','Tân Thành - Vụ Bản - Nam Định',NULL,'2024-10-31',NULL,'Nguyễn Văn Hưng',_binary ''),('88066095-3cf5-4b61-a884-28955eaae5b3','Thành phố Thái Bình',NULL,'2024-10-31',NULL,'Nguyễn Hương Giang',_binary '\0');
+/*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UKch1113horj4qr56f91omojv8` (`code`),
+  UNIQUE KEY `UKofx66keruapi6vyqpv6f2or37` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'CUSTOMER','Khách hàng'),(2,'EMPLOYEE','Nhân viên'),(3,'MANAGER','Quản lý'),(4,'IT_ADMIN','IT ADMIN');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tokens`
+--
+
+DROP TABLE IF EXISTS `tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tokens` (
+  `id` varchar(255) NOT NULL,
+  `expired` bit(1) NOT NULL,
+  `expires_at` datetime(6) DEFAULT NULL,
+  `refresh_token` varchar(255) DEFAULT NULL,
+  `refresh_token_expires_at` datetime(6) DEFAULT NULL,
+  `revoked` bit(1) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `token_type` varchar(255) DEFAULT NULL,
+  `account_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKkxd4xsavefdtlpkvnxpgojn6` (`account_id`),
+  CONSTRAINT `FKkxd4xsavefdtlpkvnxpgojn6` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tokens`
+--
+
+LOCK TABLES `tokens` WRITE;
+/*!40000 ALTER TABLE `tokens` DISABLE KEYS */;
+INSERT INTO `tokens` VALUES ('15052d1b-c2a8-477d-a106-b3f71f8fbdaa',_binary '\0','2024-11-07 10:58:50.854054','969cee8e-a5f9-45dd-81ce-06d412e06872','2024-11-21 10:58:50.854054',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI4ODA2NjA5NS0zY2Y1LTRiNjEtYTg4NC0yODk1NWVhYWU1YjMiLCJpYXQiOjE3MzAzNDcxMzAsImV4cCI6MTczMDk1MTkzMH0.E9YvdpRFnDtyEnK4yRr1N5jDbn-raOvNIId1jvj80dbuA-lp7ga5YPLlpoZh1A4Q','Bearer','88066095-3cf5-4b61-a884-28955eaae5b3'),('1e712d18-8076-4fd5-a006-9b03ae76b974',_binary '\0','2024-11-07 11:56:04.579301','4d106c22-c651-4bbd-ae7f-39a8644d0f64','2024-11-21 11:56:04.579301',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA1NjQsImV4cCI6MTczMDk1NTM2NH0.4RWbebbh4dP5ZIAclXjjZY1SN2beZUijphtPhGgGUKRDUL_ufeaLV1DCJyjSDKc6','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('1f17e781-8679-48c4-9fcb-3c66fd6013a2',_binary '\0','2024-11-07 11:48:37.730698','bcdea229-f917-4630-921e-580a6cecd901','2024-11-21 11:48:37.730698',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTAxMTcsImV4cCI6MTczMDk1NDkxN30.MEWKaYMyU5n1XzJ2p5tDDMexRje-4p8J-jCnnqZ6OMAhpq1jAGiB6x64i-iwAl8G','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('22f38910-040c-49d9-bd66-f6f6fc359f5d',_binary '\0','2024-11-07 11:40:51.924206','3a1341f4-5f02-4c38-b0dc-c1e3e3597ca4','2024-11-21 11:40:51.924206',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNDk2NTEsImV4cCI6MTczMDk1NDQ1MX0.poFvKRBa535bv-diz9N3jcW27n2tm89Xhmhyudbd84z2vuUYhXQo-Ws9IN3FuuU2','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('2b6abe4c-bd48-448d-980d-baded46a614e',_binary '\0','2024-11-07 11:47:26.720947','5a7c1e9c-9c67-4d24-927b-70bd1ffea2bb','2024-11-21 11:47:26.720947',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTAwNDYsImV4cCI6MTczMDk1NDg0Nn0.G_WhSdEOg05-Pd_XvLCrIHCS4aJUgazjh8xQAEEDNimps0CYucIfJiOacfBc5Goi','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('2b7a8fb8-e191-4cd5-9c33-48ff9d0424fd',_binary '\0','2024-11-07 14:37:41.412912','d71382a2-4d56-4773-87e3-8a4383645fdd','2024-11-21 14:37:41.412912',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNjAyNjEsImV4cCI6MTczMDk2NTA2MX0.nU9E0LdGEjpfraLl9PPDhezScABT7T8lbZRF5r4GFbVdxVs9BA_Rd7faxKB-R3LJ','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('2e1727bd-6fa8-4d5a-abe5-64a9698a9a56',_binary '\0','2024-11-07 11:47:04.491052','6b302973-ef6b-4a5d-ada5-845c07b9334b','2024-11-21 11:47:04.491052',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTAwMjQsImV4cCI6MTczMDk1NDgyNH0.izuDx5rHcRmUcjT0KQ7UBRucWJDXtwev8M61pdY9mtP2vnG3q9W9Xw8ND523-Ch9','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('4632eb0c-b743-466a-bf80-eeaa9234e06f',_binary '\0','2024-11-07 10:56:54.842155','8002e3d8-70c3-4a5d-8702-4f7dbbb3caf8','2024-11-21 10:56:54.842155',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI4ODA2NjA5NS0zY2Y1LTRiNjEtYTg4NC0yODk1NWVhYWU1YjMiLCJpYXQiOjE3MzAzNDcwMTQsImV4cCI6MTczMDk1MTgxNH0.ocaUoCPuK9t9ClTC6-nvRmq0Ns-7ro9mfbNsOYgih6WrTF_PP0EBJZ-TrzQhWWvc','Bearer','88066095-3cf5-4b61-a884-28955eaae5b3'),('4dc4ff3c-07d6-4377-99bd-8bee1b2611de',_binary '\0','2024-11-07 11:59:15.809171','55ae0b59-7633-4e1d-bd86-5cbc5e037cee','2024-11-21 11:59:15.809171',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA3NTUsImV4cCI6MTczMDk1NTU1NX0.mGoEjXOhy2OD4brGcHZqE7icZjRInmaikKUSXVjJxQ9nm7SgO5jWF99KzApiG-3B','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('6d1c993e-d804-46b5-8888-a53bdd020ab3',_binary '\0','2024-11-07 13:50:13.212297','72cd1995-f85d-4ee4-b203-e41afcaa7deb','2024-11-21 13:50:13.212297',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTc0MTMsImV4cCI6MTczMDk2MjIxM30.S6xkftuigwaOOgNQqMZEsYIJn7NlZtPSCHa0HfbTUmx23mWzNRSHwsVfSBd2DjUQ','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('749ed338-ef76-4be2-8b52-f4a35f628917',_binary '\0','2024-11-07 11:55:51.225268','3e9c324b-5e55-4fc0-a424-47d3a5bbd11b','2024-11-21 11:55:51.225268',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA1NTEsImV4cCI6MTczMDk1NTM1MX0.ATV97TBR5Lf8XR1q9Qmsb7Y3No7edmKcPwm86n4ogook0Yw56ox1KqVjiY6ND-17','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('76a3d9ad-16fe-4899-a123-bb6a22d47b40',_binary '\0','2024-11-07 11:39:50.354070','b44ac98f-74f4-489a-933d-df91842a81a5','2024-11-21 11:39:50.354070',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNDk1OTAsImV4cCI6MTczMDk1NDM5MH0.dTVLBzdYA4PR1hRac4mVuVkLYkslbU1sDGMFfJmdNhXJTumO7UAOzbb00yY-OPq2','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('98e01ff2-3943-4d22-ba0a-98e19e7c5716',_binary '\0','2024-11-07 11:56:59.001327','f8098438-248b-4757-92fa-b2047ea06070','2024-11-21 11:56:59.001832',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA2MTgsImV4cCI6MTczMDk1NTQxOH0.Ik9gbhnEp41aUbKni8sul6MCoSpiwd6qSOQGdI5s2GwQKEtP_xHXffmy8C4yCWEI','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('a4e92544-8ebd-43e4-9d1d-730b481940d0',_binary '\0','2024-11-07 12:02:41.959865','00ce4a15-678f-481a-a1ba-d407bd18fcca','2024-11-21 12:02:41.959865',_binary '','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA5NjEsImV4cCI6MTczMDk1NTc2MX0.Wt3TSod_3FNj0ZYU6RLFHMbw7HQ9ojgPbEl0EfCBeGBLehXMk3DWTc2O7I-Y17QQ','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('b480413c-80fd-4011-857e-a8ce12713a1d',_binary '\0','2024-11-07 11:59:47.367385','f6bab234-f12e-43ae-81ae-e10fad36a388','2024-11-21 11:59:47.367385',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA3ODcsImV4cCI6MTczMDk1NTU4N30.uFoB95GkB8O2Nfw_FpnDKonO-629kTJtMsvjT-44Xdqbw9L3D2W4MeRZ94lg4Mmb','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('b4976955-0691-468c-8602-936deefb6f09',_binary '\0','2024-11-07 11:17:01.972740','f11af0f3-516a-42a5-b43b-28e195bf14cf','2024-11-21 11:17:01.972740',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNDgyMjEsImV4cCI6MTczMDk1MzAyMX0.4yN52Go4paXWPi8zxiAOJvvcKj_iuTTzFpdIoNNc0YTOwUpYKwGIKUR0gZu32tZ7','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('c34eb1ce-a191-4a76-9ff5-b60ac3d181b6',_binary '\0','2024-11-07 11:56:30.227343','39d23350-e4b9-44fd-a82c-6a58d55b07d8','2024-11-21 11:56:30.227343',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA1OTAsImV4cCI6MTczMDk1NTM5MH0.V_R0Gme1mRdhKOJ4-qkNVqEF53HtpTfUY3idITdBudzbZJTwX05s0fG1aFhH6FaV','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('c41e863f-c093-41fc-940a-9e5cd2dbe225',_binary '\0','2024-11-07 11:40:05.503610','bcfd9ff7-1890-45c2-9636-2c30dd92529a','2024-11-21 11:40:05.503610',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNDk2MDUsImV4cCI6MTczMDk1NDQwNX0.A6qUX83oBr3k1wJziRTeof5N0QkJqbQbYr42rrZNVZTEv8_8SwkOVeR3hKyc4GbM','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('cf39a16d-68fd-4364-b09e-77b546b22e70',_binary '\0','2024-11-07 12:02:29.129109','e7951ca8-621f-479f-917d-38a677004fea','2024-11-21 12:02:29.129109',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA5NDksImV4cCI6MTczMDk1NTc0OX0.PKVoZKxX_u0t0Xy9nltT4TiLFqqlkQqubmJZRaR4TeZu4ubIB3nCCo3wQjqKHVfL','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('cf77f798-f780-4750-94f9-5fa0beb699dd',_binary '\0','2024-11-07 13:50:40.627799','c2467031-570e-4375-81ef-9edf61b263df','2024-11-21 13:50:40.627799',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTc0NDAsImV4cCI6MTczMDk2MjI0MH0.Ed-PPKNxf2wLt7Lf45xcQ7tTIMP_iUeqohYTHK3hyi22KOia-0hRKPMJJ36961jP','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('e139318f-61d9-4b58-920d-97b02c33170f',_binary '\0','2024-11-07 12:06:43.067148','f95eac83-6bd8-4165-894b-afe4f5c9dfba','2024-11-21 12:06:43.067148',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTEyMDMsImV4cCI6MTczMDk1NjAwM30.na5POKX3Fh_wGwETB65kBMNz6kA7NuEWRuhd1yQMXng_G-f30o130DN0zDjJpNKa','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('e40ac9e0-b6ae-40d9-8633-2a0bba563d4b',_binary '\0','2024-11-07 11:57:27.513341','f6028e5a-093e-4807-96fe-d296869e72e9','2024-11-21 11:57:27.513341',_binary '\0','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTA2NDcsImV4cCI6MTczMDk1NTQ0N30.WzuoFcmO0tIs8AY5-wXcZ8ZsYZIu56IGwc_gnEZw1Ew6kkSgDqWb0OWlv93qTgkN','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('e59db7a8-fe6f-4d6b-900b-cc344fe41a75',_binary '\0','2024-11-07 11:20:44.575614','de18e9d0-913c-4ed1-91ae-5ce9a5facc49','2024-11-21 11:20:44.575614',_binary '','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNDg0NDQsImV4cCI6MTczMDk1MzI0NH0.8ql9aCG1R7BNezhHxRibXJ6lQM0chK1oQfu5sd5oZszj6rLK5Toyn5RGmhNifSKE','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('eadb104b-8577-4a90-bcfe-f0210d356e88',_binary '\0','2024-11-07 11:33:59.107844','733a7eb6-1fe0-47a5-acf5-d27275e92944','2024-11-21 11:33:59.107844',_binary '','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNDkyMzksImV4cCI6MTczMDk1NDAzOX0.G3w9yv0n9xaQqZlr0sWfWfN2gWWdqsgc-HIM6u7MWFiqSboIXG5pB22gPbkuNiHw','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e'),('f649e607-6314-4329-9054-aac225edc6b1',_binary '\0','2024-11-07 12:03:38.328066','7b15a566-99cc-4e2f-bc09-d6862c2d0079','2024-11-21 12:03:38.328066',_binary '','eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzNDdkMDBmYS04ODk5LTRhNTgtOTg2YS01MTkxNjljMmFjNWUiLCJpYXQiOjE3MzAzNTEwMTgsImV4cCI6MTczMDk1NTgxOH0.sV5S7Aow4K7XXmmvG1CqerCrNE7lKjQ0BoVSlw1G3cWC5nL3jZXSEoL7sp1socgr','Bearer','347d00fa-8899-4a58-986a-519169c2ac5e');
+/*!40000 ALTER TABLE `tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-10-31 15:28:01

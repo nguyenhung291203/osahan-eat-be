@@ -1,0 +1,48 @@
+api:
+  prefix: /api/v1
+server:
+  port: 8080
+
+base-url: http://localhost:${server.port}${api.prefix}
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3307/osahan-eat
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1092269657161-0vhinhbcdaea7r22o1qditdg3ujahd8p.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email
+            redirect-uri: "{base-url}/login/oauth2/code/google"
+          facebook:
+            client-id: YOUR_FACEBOOK_CLIENT_ID
+            client-secret: YOUR_FACEBOOK_CLIENT_SECRET
+            scope:
+              - public_profile
+              - email
+            redirect-uri: "{base-url}/login/oauth2/code/facebook"
+app:
+  jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
+  jwt-expiration-milliseconds: 604800000
+  jwt-expiration-refresh-token: 1814400000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+upload:
+  path: uploads/
+  max-file-size: 10485760
+  base-url: http://localhost:${server.port}${api.prefix}/view
