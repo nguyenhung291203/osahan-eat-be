@@ -26,7 +26,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"0869885513\",\r\n    \"password\":\"123456\",\r\n    \"confirmPassword\":\"123456\",\r\n    \"fullName\":\"Nguyễn Hương Giang\",\r\n    \"gender\":false,\r\n    \"dateOfBirth\":\"14-07-2003\",\r\n    \"address\":\"Thành phố Thái Bình\"\r\n}",
+							"raw": "{\r\n    \"username\":\"0869885514\",\r\n    \"password\":\"123456\",\r\n    \"confirmPassword\":\"123456\",\r\n    \"fullName\":\"Nguyễn Hương Giang\",\r\n    \"gender\":false,\r\n    \"dateOfBirth\":\"14-07-2003\",\r\n    \"address\":\"Thành phố Thái Bình\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -133,6 +133,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/auth/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -162,6 +190,34 @@
 		{
 			"name": "Account",
 			"item": [
+				{
+					"name": "get info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/accounts/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"accounts",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "upload image",
 					"request": {
@@ -209,6 +265,236 @@
 									"value": null,
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "find all categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find category by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories/0b7d2b17-7f0e-4423-aa2f-c73872b90cf8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"0b7d2b17-7f0e-4423-aa2f-c73872b90cf8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\" Phở  \",\r\n    \"description\":\"Phở là một trong những món ăn đặc trưng và nổi tiếng nhất của ẩm thực Việt Nam\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categories",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categories/upload-image/0b7d2b17-7f0e-4423-aa2f-c73872b90cf8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"upload-image",
+								"0b7d2b17-7f0e-4423-aa2f-c73872b90cf8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dish",
+			"item": [
+				{
+					"name": "find all dishes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/dishes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find dish by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/dishes/64768584-e4d1-4b8f-9fd9-a149483c1aac",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dishes",
+								"64768584-e4d1-4b8f-9fd9-a149483c1aac"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create dish",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Sườn bò nướng Hàn Quốc\",\r\n    \"description\":\"Sườn bò hoặc sườn heo nướng sốt xì dầu ngọt mặn.\",\r\n    \"price\":30,\r\n    \"categoryId\":\"04b64dfd-d02c-4447-b410-b4281f5ae998\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/dishes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1ef988c4-f151-45c0-ace2-583a4613b0b8"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/dishes/upload-image/95601ce6-987c-11ef-9798-0242ac110002",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dishes",
+								"upload-image",
+								"95601ce6-987c-11ef-9798-0242ac110002"
 							]
 						}
 					},

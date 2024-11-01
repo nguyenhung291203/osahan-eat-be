@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AccountInfoResponse {
+public class AccountInfoResponse extends BaseResponse {
     String id;
     String username;
     Role role;

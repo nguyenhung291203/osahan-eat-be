@@ -1,5 +1,14 @@
 package com.develop.osahaneatbe.service.token;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.develop.osahaneatbe.component.JwtTokenProvider;
 import com.develop.osahaneatbe.constant.error.AccountErrorCode;
 import com.develop.osahaneatbe.constant.error.BaseErrorCode;
@@ -12,16 +21,10 @@ import com.develop.osahaneatbe.exception.ApiException;
 import com.develop.osahaneatbe.mapper.TokenMapper;
 import com.develop.osahaneatbe.repository.AccountRepository;
 import com.develop.osahaneatbe.repository.TokenRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,28 +42,40 @@ public class TokenServiceImpl implements TokenService {
     long jwtExpirationRefreshToken;
 
     private Account getAccountById(String accountId) {
-        return accountRepository.findById(accountId).orElseThrow(() -> new ApiException(AccountErrorCode.ACCOUNT_NOT_EXISTED));
+        return accountRepository
+                .findById(accountId)
+                .orElseThrow(() -> new ApiException(AccountErrorCode.ACCOUNT_NOT_EXISTED));
     }
 
     private Token getTokenByRefreshToken(String refreshToken) {
-        return tokenRepository.findTokenByRefreshToken(refreshToken).orElseThrow(() -> new ApiException(TokenErrorCode.TOKEN_NOT_FOUND));
+        return tokenRepository
+                .findTokenByRefreshToken(refreshToken)
+                .orElseThrow(() -> new ApiException(TokenErrorCode.TOKEN_NOT_FOUND));
     }
 
     private Token getTokenByToken(String token) {
-        return tokenRepository.findTokenByToken(token).orElseThrow(() -> new ApiException(TokenErrorCode.TOKEN_NOT_FOUND));
+        return tokenRepository
+                .findTokenByToken(token)
+                .orElseThrow(() -> new ApiException(TokenErrorCode.TOKEN_NOT_FOUND));
     }
-
 
     @Override
     @Transactional
     public Token addToken(String accountId, String token) {
         Account account = getAccountById(accountId);
 
-        Token tokenEntity = Token.builder().account(account).token(token).refreshToken(UUID.randomUUID().toString()).revoked(false).expired(false).tokenType("Bearer").expiresAt(LocalDateTime.now().plusSeconds(jwtExpirationDate / 1000)).refreshTokenExpiresAt(LocalDateTime.now().plusSeconds(jwtExpirationRefreshToken / 1000)).build();
+        Token tokenEntity = Token.builder()
+                .account(account)
+                .token(token)
+                .refreshToken(UUID.randomUUID().toString())
+                .revoked(false)
+                .expired(false)
+                .tokenType("Bearer")
+                .expiresAt(LocalDateTime.now().plusSeconds(jwtExpirationDate / 1000))
+                .refreshTokenExpiresAt(LocalDateTime.now().plusSeconds(jwtExpirationRefreshToken / 1000))
+                .build();
         return tokenRepository.save(tokenEntity);
-
     }
-
 
     @Override
     @Transactional
@@ -85,12 +100,19 @@ public class TokenServiceImpl implements TokenService {
         if (token == null) {
             return TokenErrorCode.EMPTY_TOKEN;
         }
-        jwtTokenProvider.decodeToken(token);
+        String accountId = jwtTokenProvider.getAccountId(token);
+
+        if (accountId == null) {
+            return TokenErrorCode.INVALID_TOKEN;
+        }
         Token tokenEntity = getTokenByToken(token);
+        if (Boolean.TRUE.equals(tokenEntity.getExpired())) {
+            return TokenErrorCode.TOKEN_EXPIRED;
+        }
         if (tokenEntity.getExpiresAt() != null && tokenEntity.getExpiresAt().isBefore(LocalDateTime.now())) {
             return TokenErrorCode.TOKEN_EXPIRED;
         }
-        if (tokenEntity.isRevoked()) {
+        if (Boolean.TRUE.equals(tokenEntity.getRevoked())) {
             return TokenErrorCode.EMPTY_REVOKED;
         }
 

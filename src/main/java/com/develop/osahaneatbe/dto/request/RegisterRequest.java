@@ -2,12 +2,13 @@ package com.develop.osahaneatbe.dto.request;
 
 import java.time.LocalDate;
 
-import com.develop.osahaneatbe.annotation.PasswordMatches;
-import com.develop.osahaneatbe.constant.message.AccountErrorMessage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import com.develop.osahaneatbe.annotation.PasswordMatches;
+import com.develop.osahaneatbe.constant.message.AccountErrorMessage;
+import com.develop.osahaneatbe.constant.regexp.AccountRegexPatterns;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.*;
@@ -21,7 +22,7 @@ import lombok.experimental.FieldDefaults;
 @PasswordMatches
 @Builder
 public class RegisterRequest {
-    @Pattern(regexp = "^(0\\d{9})$", message = AccountErrorMessage.USERNAME_INVALID)
+    @Pattern(regexp = AccountRegexPatterns.PHONE_NUMBER_PATTERN, message = AccountErrorMessage.USERNAME_INVALID)
     @NotBlank(message = AccountErrorMessage.FULLNAME_NOT_BLANK)
     String username;
 

@@ -1,13 +1,15 @@
 package com.develop.osahaneatbe.constant.error;
 
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+
 import com.develop.osahaneatbe.constant.message.AccountErrorMessage;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
-
-import java.util.Map;
 
 @AllArgsConstructor
 @Getter
@@ -44,7 +46,8 @@ public enum AccountErrorCode implements BaseErrorCode {
         StringBuilder detailedMessage = new StringBuilder(message);
         if (additionalInfo != null && !additionalInfo.isEmpty()) {
             detailedMessage.append(": ");
-            additionalInfo.forEach((key, value) -> detailedMessage.append(key).append(" - ").append(value).append("; "));
+            additionalInfo.forEach((key, value) ->
+                    detailedMessage.append(key).append(" - ").append(value).append("; "));
         }
         return detailedMessage.toString();
     }

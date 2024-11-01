@@ -1,7 +1,8 @@
 package com.develop.osahaneatbe.constant.error;
 
-import com.develop.osahaneatbe.constant.message.RoleErrorMessage;
 import org.springframework.http.HttpStatus;
+
+import com.develop.osahaneatbe.constant.message.RoleErrorMessage;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

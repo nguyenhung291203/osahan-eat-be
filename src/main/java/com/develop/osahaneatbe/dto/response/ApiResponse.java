@@ -1,13 +1,14 @@
 package com.develop.osahaneatbe.dto.response;
 
+import static org.springframework.http.HttpStatus.OK;
+
+import org.springframework.http.ResponseEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @Getter
 @Setter

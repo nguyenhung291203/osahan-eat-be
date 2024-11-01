@@ -1,13 +1,12 @@
 package com.develop.osahaneatbe.exception;
 
-import com.develop.osahaneatbe.constant.error.BaseErrorCode;
+import java.util.Map;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Map;
 
 @Getter
 @Setter
@@ -19,5 +18,4 @@ public class ValidateException extends RuntimeException {
     public ValidateException(Map<String, String> errors) {
         this.errors = errors;
     }
-
 }

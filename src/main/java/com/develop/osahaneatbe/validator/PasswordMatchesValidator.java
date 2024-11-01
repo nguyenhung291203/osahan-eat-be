@@ -1,10 +1,11 @@
 package com.develop.osahaneatbe.validator;
 
-import com.develop.osahaneatbe.annotation.PasswordMatches;
-import com.develop.osahaneatbe.dto.request.RegisterRequest;
-import com.develop.osahaneatbe.constant.message.AccountErrorMessage;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+
+import com.develop.osahaneatbe.annotation.PasswordMatches;
+import com.develop.osahaneatbe.constant.message.AccountErrorMessage;
+import com.develop.osahaneatbe.dto.request.RegisterRequest;
 
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, RegisterRequest> {
 

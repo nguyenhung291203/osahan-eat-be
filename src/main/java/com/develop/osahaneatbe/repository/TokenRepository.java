@@ -1,13 +1,13 @@
 package com.develop.osahaneatbe.repository;
 
-import com.develop.osahaneatbe.entity.Account;
-import com.develop.osahaneatbe.entity.Token;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.develop.osahaneatbe.entity.Account;
+import com.develop.osahaneatbe.entity.Token;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, String> {

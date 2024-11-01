@@ -1,17 +1,18 @@
 package com.develop.osahaneatbe.constant.error;
 
+import org.springframework.http.HttpStatus;
+
 import com.develop.osahaneatbe.constant.message.ProfileErrorMessage;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum ProfileErrorCode implements BaseErrorCode {
-
     PROFILE_NOT_FOUND(4001, ProfileErrorMessage.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND),
     PROFILE_UPDATE_FAILED(4002, ProfileErrorMessage.PROFILE_UPDATE_FAILED, HttpStatus.BAD_REQUEST),
     INVALID_PROFILE_DATA(4003, ProfileErrorMessage.INVALID_PROFILE_DATA, HttpStatus.BAD_REQUEST),

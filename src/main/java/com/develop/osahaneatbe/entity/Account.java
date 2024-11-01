@@ -1,5 +1,7 @@
 package com.develop.osahaneatbe.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -13,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Account extends BaseEntity {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
@@ -38,5 +40,14 @@ public class Account extends BaseEntity {
     Role role;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Profile profile;
+    Profile profile;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    List<RatingDish> ratingDishes;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    List<RatingRestaurant> ratingRestaurants;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    List<Order> orders;
 }

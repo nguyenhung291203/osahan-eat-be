@@ -17,5 +17,4 @@ public class AccountErrorMessage {
     public static final String FULLNAME_SIZE = "Họ tên cần có tối đa 6 ký tự";
     public static final String FULLNAME_NOT_BLANK = "Họ tên không được để trống";
     public static final String PASSWORDS_NOT_MATCH = "Mật khẩu và xác nhận mật khẩu không khớp";
-
 }

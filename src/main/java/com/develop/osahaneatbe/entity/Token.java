@@ -25,8 +25,8 @@ public class Token {
     @Column(name = "token_type")
     String tokenType;
 
-    boolean expired;
-    boolean revoked;
+    Boolean expired;
+    Boolean revoked;
 
     @Column(name = "expires_at")
     LocalDateTime expiresAt;

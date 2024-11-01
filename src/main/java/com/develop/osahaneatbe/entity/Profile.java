@@ -1,10 +1,11 @@
 package com.develop.osahaneatbe.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "profiles")
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Profile {
+public class Profile extends BaseEntity {
     @Id
     String id;
 
@@ -37,6 +38,4 @@ public class Profile {
     @MapsId
     @JoinColumn(name = "id")
     Account account;
-
-
 }

@@ -1,4 +1,4 @@
-package com.develop.osahaneatbe.entity;
+package com.develop.osahaneatbe.dto.response;
 
 import java.util.Collection;
 import java.util.List;
@@ -7,6 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.develop.osahaneatbe.entity.Account;
+import com.develop.osahaneatbe.entity.Role;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -37,6 +39,26 @@ public class CustomUserDetails implements UserDetails {
                 .facebookAccountId(account.getFacebookAccountId())
                 .googleAccountId(account.getGoogleAccountId())
                 .authorities(authorityList)
+                .build();
+    }
+
+    public static Account toAccount(CustomUserDetails customUserDetails) {
+        Role role = new Role();
+        if (customUserDetails.getAuthorities() != null
+                && !customUserDetails.getAuthorities().isEmpty()) {
+            String roleCode =
+                    customUserDetails.getAuthorities().iterator().next().getAuthority();
+            role.setCode(roleCode);
+        }
+
+        return Account.builder()
+                .id(customUserDetails.getId())
+                .username(customUserDetails.getUsername())
+                .password(customUserDetails.getPassword())
+                .isActive(customUserDetails.isActive())
+                .facebookAccountId(customUserDetails.getFacebookAccountId())
+                .googleAccountId(customUserDetails.getGoogleAccountId())
+                .role(role)
                 .build();
     }
 

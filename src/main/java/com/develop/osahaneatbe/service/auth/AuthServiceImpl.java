@@ -1,5 +1,19 @@
 package com.develop.osahaneatbe.service.auth;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.develop.osahaneatbe.component.JwtTokenProvider;
 import com.develop.osahaneatbe.constant.code.RoleCode;
 import com.develop.osahaneatbe.constant.error.AccountErrorCode;
@@ -23,20 +37,10 @@ import com.develop.osahaneatbe.repository.ProfileRepository;
 import com.develop.osahaneatbe.repository.RoleRepository;
 import com.develop.osahaneatbe.repository.TokenRepository;
 import com.develop.osahaneatbe.service.token.TokenService;
-import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +90,6 @@ public class AuthServiceImpl implements AuthService {
         profileRepository.save(profile);
 
         return Map.of();
-
     }
 
     @Override
@@ -95,9 +98,8 @@ public class AuthServiceImpl implements AuthService {
         errors.put("username", AccountErrorMessage.INCORRECT_PASSWORD);
         errors.put("password", AccountErrorMessage.INCORRECT_PASSWORD);
         Exception exception = new ValidateException(errors);
-        Account account = accountRepository
-                .findAccountByUsername(request.getUsername())
-                .orElseThrow(() -> exception);
+        Account account =
+                accountRepository.findAccountByUsername(request.getUsername()).orElseThrow(() -> exception);
         if (!passwordEncoder.matches(request.getPassword(), account.getPassword())) {
             throw exception;
         }
@@ -129,4 +131,28 @@ public class AuthServiceImpl implements AuthService {
         return Map.of();
     }
 
+    @Override
+    public TokenResponse refreshToken(HttpServletRequest request) {
+        String token = tokenService.getTokenFromRequest(request);
+        if (token == null) {
+            throw new ApiException(TokenErrorCode.EMPTY_TOKEN);
+        }
+        String accountId = jwtTokenProvider.getAccountId(token);
+
+        if (accountId == null) {
+            throw new ApiException(TokenErrorCode.INVALID_TOKEN);
+        }
+        Token tokenEntity = getTokenByToken(token);
+        if (tokenEntity.getExpiresAt() != null
+                && tokenEntity.getRefreshTokenExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new ApiException(TokenErrorCode.REFRESH_TOKEN_EXPIRED);
+        }
+        if (Boolean.TRUE.equals(tokenEntity.getRevoked())) {
+            throw new ApiException(TokenErrorCode.EMPTY_REVOKED);
+        }
+        tokenEntity.setRevoked(true);
+        tokenEntity.setExpired(true);
+        Token tokenNew = tokenRepository.save(tokenEntity);
+        return tokenMapper.toTokenResponse(tokenNew);
+    }
 }

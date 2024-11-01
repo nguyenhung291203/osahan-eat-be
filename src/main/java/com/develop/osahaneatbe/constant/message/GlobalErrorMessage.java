@@ -9,6 +9,5 @@ public class GlobalErrorMessage {
     public static final String UNAUTHORIZED = "Bạn không có quyền truy cập tài nguyên này";
     public static final String DATA_VALIDATION_FAILED = "Xác thực dữ liệu thất bại";
 
-    private GlobalErrorMessage() {
-    }
+    private GlobalErrorMessage() {}
 }

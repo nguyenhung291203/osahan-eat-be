@@ -1,13 +1,13 @@
 package com.develop.osahaneatbe.service;
 
-import com.develop.osahaneatbe.entity.Account;
-import com.develop.osahaneatbe.entity.CustomUserDetails;
-import com.develop.osahaneatbe.repository.AccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.develop.osahaneatbe.dto.response.CustomUserDetails;
+import com.develop.osahaneatbe.entity.Account;
+import com.develop.osahaneatbe.repository.AccountRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,9 @@
 package com.develop.osahaneatbe.dto.request;
 
-import com.develop.osahaneatbe.constant.message.AccountErrorMessage;
 import jakarta.validation.constraints.NotBlank;
+
+import com.develop.osahaneatbe.constant.message.AccountErrorMessage;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

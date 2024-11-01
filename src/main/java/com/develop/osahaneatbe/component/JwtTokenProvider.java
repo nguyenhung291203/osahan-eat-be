@@ -1,10 +1,15 @@
 package com.develop.osahaneatbe.component;
 
-import com.develop.osahaneatbe.constant.error.TokenErrorCode;
+import java.security.Key;
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.develop.osahaneatbe.entity.Account;
-import com.develop.osahaneatbe.entity.Token;
-import com.develop.osahaneatbe.exception.ApiException;
-import com.develop.osahaneatbe.repository.TokenRepository;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -13,12 +18,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.security.Key;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -31,7 +30,7 @@ public class JwtTokenProvider {
     @Value("${app.jwt-expiration-milliseconds}")
     long jwtExpirationDate;
 
-    final TokenRepository tokenRepository;
+    static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
@@ -52,24 +51,20 @@ public class JwtTokenProvider {
     }
 
     public String getAccountId(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.getSubject();
-    }
-
-    public Claims decodeToken(String token) {
         try {
-            return Jwts.parserBuilder()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+            return claims.getSubject();
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            logger.warn("Token đã hết hạn: {}", e.getMessage());
+        } catch (io.jsonwebtoken.JwtException e) {
+            logger.error("Token không hợp lệ: {}", e.getMessage());
         } catch (Exception e) {
-            log.error("Không thể giải mã token: {}", e.getMessage());
-            throw new ApiException(TokenErrorCode.INVALID_TOKEN);
+            logger.error("Lỗi giải mã token: {}", e.getMessage());
         }
+        return null;
     }
 }

@@ -1,9 +1,8 @@
 package com.develop.osahaneatbe.exception;
 
-import com.develop.osahaneatbe.constant.error.BaseErrorCode;
-import com.develop.osahaneatbe.constant.error.GlobalErrorCode;
-import com.develop.osahaneatbe.dto.response.ApiResponse;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -11,12 +10,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.develop.osahaneatbe.constant.error.BaseErrorCode;
+import com.develop.osahaneatbe.constant.error.GlobalErrorCode;
+import com.develop.osahaneatbe.dto.response.ApiResponse;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    private ApiResponse<Map<String, String>> generateExceptionResponse(BaseErrorCode errorCode, Map<String, String> errors) {
+    private ApiResponse<Map<String, String>> generateExceptionResponse(
+            BaseErrorCode errorCode, Map<String, String> errors) {
         ApiResponse<Map<String, String>> apiResponse = new ApiResponse<>();
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(errorCode.getMessage());
@@ -32,13 +34,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex) {
         BaseErrorCode errorCode = GlobalErrorCode.DATA_VALIDATION_FAILED;
 
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage())
-        );
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
         ApiResponse<Map<String, String>> apiExceptionResponse = generateExceptionResponse(errorCode, Map.of());
         apiExceptionResponse.setResult(errors);
@@ -55,9 +58,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorCode.getHttpStatus()).body(apiExceptionResponse);
     }
 
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiResponse<Map<String, String>>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex) {
         BaseErrorCode errorCode = GlobalErrorCode.INVALID_DATA_FORMAT;
         ApiResponse<Map<String, String>> apiExceptionResponse = generateExceptionResponse(errorCode, Map.of());
         String errorMessage = "Dữ liệu không hợp lệ: " + ex.getMessage();

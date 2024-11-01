@@ -6,6 +6,10 @@ server:
 base-url: http://localhost:${server.port}${api.prefix}
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   jpa:
     hibernate:
       ddl-auto: update
@@ -45,4 +49,4 @@ logging:
 upload:
   path: uploads/
   max-file-size: 10485760
-  base-url: http://localhost:${server.port}${api.prefix}/view
+  base-url: http://localhost:${server.port}${api.prefix}/view/
