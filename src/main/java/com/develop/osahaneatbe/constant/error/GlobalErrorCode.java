@@ -18,6 +18,7 @@ public enum GlobalErrorCode implements BaseErrorCode {
     INVALID_DATA_FORMAT(422, GlobalErrorMessage.INVALID_DATA_FORMAT, HttpStatus.CONFLICT),
     UNAUTHENTICATED(401, GlobalErrorMessage.UNAUTHENTICATED, HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(403, GlobalErrorMessage.UNAUTHORIZED, HttpStatus.FORBIDDEN),
+    PATH_NOT_FOUND(404, GlobalErrorMessage.PATH_NOT_FOUND, HttpStatus.NOT_FOUND),
     DATA_VALIDATION_FAILED(422, GlobalErrorMessage.DATA_VALIDATION_FAILED, HttpStatus.CONFLICT);
 
     private final int code;

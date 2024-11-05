@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import static com.develop.osahaneatbe.constant.pattern.DateTimePatterns.DATE_PATTERN;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,16 +20,11 @@ public class AccountInfoResponse extends BaseResponse {
     String id;
     String username;
     Role role;
-
-    @JsonProperty("full_name")
     String fullName;
-
     boolean gender;
     String avatar;
-
     @JsonProperty("date_of_birth")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN)
     LocalDate dateOfBirth;
-
     String address;
 }

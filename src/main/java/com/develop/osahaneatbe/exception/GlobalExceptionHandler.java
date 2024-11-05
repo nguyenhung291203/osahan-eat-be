@@ -3,6 +3,7 @@ package com.develop.osahaneatbe.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -14,6 +15,7 @@ import com.develop.osahaneatbe.constant.error.BaseErrorCode;
 import com.develop.osahaneatbe.constant.error.GlobalErrorCode;
 import com.develop.osahaneatbe.dto.response.ApiResponse;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -90,6 +92,15 @@ public class GlobalExceptionHandler {
         BaseErrorCode errorCode = GlobalErrorCode.UNCATEGORIZED_EXCEPTION;
         ApiResponse<Map<String, String>> apiExceptionResponse = generateExceptionResponse(errorCode, Map.of());
         apiExceptionResponse.setMessage("Đã xảy ra lỗi không xác định: " + ex.getMessage());
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(apiExceptionResponse);
+    }
+
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        BaseErrorCode errorCode = GlobalErrorCode.PATH_NOT_FOUND;
+        ApiResponse<Map<String, String>> apiExceptionResponse = generateExceptionResponse(errorCode, Map.of());
+        apiExceptionResponse.setMessage(errorCode.getMessage());
         return ResponseEntity.status(errorCode.getHttpStatus()).body(apiExceptionResponse);
     }
 }

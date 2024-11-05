@@ -14,6 +14,7 @@ import com.develop.osahaneatbe.constant.error.CategoryErrorCode;
 import com.develop.osahaneatbe.constant.error.DishErrorCode;
 import com.develop.osahaneatbe.constant.message.DishErrorMessage;
 import com.develop.osahaneatbe.dto.request.DishCreationRequest;
+import com.develop.osahaneatbe.dto.response.DishCompact;
 import com.develop.osahaneatbe.dto.response.DishResponse;
 import com.develop.osahaneatbe.entity.Category;
 import com.develop.osahaneatbe.entity.Dish;
@@ -22,6 +23,7 @@ import com.develop.osahaneatbe.exception.ValidateException;
 import com.develop.osahaneatbe.mapper.DishMapper;
 import com.develop.osahaneatbe.repository.CategoryRepository;
 import com.develop.osahaneatbe.repository.DishRepository;
+import com.develop.osahaneatbe.repository.RestaurantRepository;
 import com.develop.osahaneatbe.service.media.MediaService;
 
 import lombok.AccessLevel;
@@ -35,6 +37,7 @@ public class DishServiceImpl implements DishService {
     DishRepository dishRepository;
     DishMapper dishMapper;
     CategoryRepository categoryRepository;
+    RestaurantRepository restaurantRepository;
     MediaService mediaService;
 
     private Category getCategoryById(String id) {
@@ -84,5 +87,10 @@ public class DishServiceImpl implements DishService {
         dish.setImage(image);
         dishRepository.save(dish);
         return Map.of();
+    }
+
+    @Override
+    public List<DishCompact> findAllDishesByRestaurantId(String restaurantId) {
+        return List.of();
     }
 }

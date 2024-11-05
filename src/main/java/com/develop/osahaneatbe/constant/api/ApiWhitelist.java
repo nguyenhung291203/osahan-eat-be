@@ -32,7 +32,9 @@ public class ApiWhitelist {
                 new ProtectedEndpoint(String.format("%s/categories", apiPrefix), HttpMethod.GET),
                 new ProtectedEndpoint(String.format("%s/categories/{id}", apiPrefix), HttpMethod.GET),
                 new ProtectedEndpoint(String.format("%s/dishes", apiPrefix), HttpMethod.GET),
-                new ProtectedEndpoint(String.format("%s/dishes/{id}", apiPrefix), HttpMethod.GET));
+                new ProtectedEndpoint(String.format("%s/dishes/{id}", apiPrefix), HttpMethod.GET),
+                new ProtectedEndpoint(String.format("%s/restaurants", apiPrefix), HttpMethod.GET),
+                new ProtectedEndpoint(String.format("%s/restaurants/{id}", apiPrefix), HttpMethod.GET));
     }
 
     public boolean isWhitelisted(String path, HttpMethod method) {

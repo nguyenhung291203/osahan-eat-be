@@ -39,6 +39,12 @@ public class Restaurant extends BaseEntity {
     LocalTime openTime;
     LocalTime closeTime;
 
+    @Column(nullable = true)
+    Double latitude;
+
+    @Column(nullable = true)
+    Double longitude;
+
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     List<RatingRestaurant> ratingRestaurants;
 

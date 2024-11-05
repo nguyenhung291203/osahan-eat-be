@@ -8,6 +8,6 @@ public class GlobalErrorMessage {
     public static final String UNAUTHENTICATED = "Chưa xác thực: Vui lòng đăng nhập để truy cập tài nguyên";
     public static final String UNAUTHORIZED = "Bạn không có quyền truy cập tài nguyên này";
     public static final String DATA_VALIDATION_FAILED = "Xác thực dữ liệu thất bại";
-
+    public static final String PATH_NOT_FOUND = "Đường dẫn yêu cầu không tồn tại";
     private GlobalErrorMessage() {}
 }
