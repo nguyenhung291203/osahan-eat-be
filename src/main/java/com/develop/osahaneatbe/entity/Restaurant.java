@@ -1,12 +1,12 @@
 package com.develop.osahaneatbe.entity;
 
-import java.time.LocalTime;
-import java.util.List;
-
+import com.develop.osahaneatbe.listener.RestaurantListener;
 import jakarta.persistence.*;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
+@EntityListeners(RestaurantListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Restaurant extends BaseEntity {
     @Id
@@ -56,4 +57,7 @@ public class Restaurant extends BaseEntity {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     List<Order> orders;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    List<FavoriteRestaurant> favoriteRestaurants;
 }

@@ -1,13 +1,11 @@
 package com.develop.osahaneatbe.constant.error;
 
-import org.springframework.http.HttpStatus;
-
 import com.develop.osahaneatbe.constant.message.GlobalErrorMessage;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
@@ -19,7 +17,9 @@ public enum GlobalErrorCode implements BaseErrorCode {
     UNAUTHENTICATED(401, GlobalErrorMessage.UNAUTHENTICATED, HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(403, GlobalErrorMessage.UNAUTHORIZED, HttpStatus.FORBIDDEN),
     PATH_NOT_FOUND(404, GlobalErrorMessage.PATH_NOT_FOUND, HttpStatus.NOT_FOUND),
-    DATA_VALIDATION_FAILED(422, GlobalErrorMessage.DATA_VALIDATION_FAILED, HttpStatus.CONFLICT);
+    DATA_VALIDATION_FAILED(422, GlobalErrorMessage.DATA_VALIDATION_FAILED, HttpStatus.CONFLICT),
+    INVALID_PAGINATION_REQUEST(400, GlobalErrorMessage.INVALID_PAGINATION_REQUEST, HttpStatus.BAD_REQUEST),
+    ;
 
     private final int code;
     private final String message;

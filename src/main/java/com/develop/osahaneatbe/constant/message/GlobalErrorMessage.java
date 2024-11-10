@@ -9,5 +9,7 @@ public class GlobalErrorMessage {
     public static final String UNAUTHORIZED = "Bạn không có quyền truy cập tài nguyên này";
     public static final String DATA_VALIDATION_FAILED = "Xác thực dữ liệu thất bại";
     public static final String PATH_NOT_FOUND = "Đường dẫn yêu cầu không tồn tại";
+    public static final String INVALID_PAGINATION_REQUEST = "Yêu cầu phân trang không hợp lệ";
+
     private GlobalErrorMessage() {}
 }

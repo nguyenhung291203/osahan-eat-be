@@ -1,15 +1,5 @@
 package com.develop.osahaneatbe.service.dish;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import jakarta.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.develop.osahaneatbe.constant.error.CategoryErrorCode;
 import com.develop.osahaneatbe.constant.error.DishErrorCode;
 import com.develop.osahaneatbe.constant.message.DishErrorMessage;
@@ -24,11 +14,19 @@ import com.develop.osahaneatbe.mapper.DishMapper;
 import com.develop.osahaneatbe.repository.CategoryRepository;
 import com.develop.osahaneatbe.repository.DishRepository;
 import com.develop.osahaneatbe.repository.RestaurantRepository;
+import com.develop.osahaneatbe.service.dish.redis.DishRedisService;
 import com.develop.osahaneatbe.service.media.MediaService;
-
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +35,7 @@ public class DishServiceImpl implements DishService {
     DishRepository dishRepository;
     DishMapper dishMapper;
     CategoryRepository categoryRepository;
+    DishRedisService dishRedisService;
     RestaurantRepository restaurantRepository;
     MediaService mediaService;
 
@@ -66,7 +65,12 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public List<DishResponse> findAllDishes() {
-        return dishRepository.findAll().stream().map(dishMapper::toDishResponse).toList();
+        List<DishResponse> response = dishRedisService.findAllDishes();
+        if (response == null) {
+            response = dishRepository.findAll().stream().map(dishMapper::toDishResponse).toList();
+            dishRedisService.saveAllDishes(response);
+        }
+        return response;
     }
 
     @Override

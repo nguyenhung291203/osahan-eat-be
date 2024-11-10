@@ -2,8 +2,11 @@ package com.develop.osahaneatbe.dto.response;
 
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import static com.develop.osahaneatbe.constant.pattern.DateTimePatterns.TIME_PATTERN;
 
 @Getter
 @Setter
@@ -19,6 +22,8 @@ public class RestaurantCompact {
     String image;
     Boolean isFreeShip;
     Boolean isActive;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_PATTERN)
     LocalTime openTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_PATTERN)
     LocalTime closeTime;
 }

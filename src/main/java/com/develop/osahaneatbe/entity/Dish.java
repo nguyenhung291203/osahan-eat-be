@@ -1,12 +1,12 @@
 package com.develop.osahaneatbe.entity;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+import com.develop.osahaneatbe.listener.DishListener;
 import jakarta.persistence.*;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "dishes")
@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
+@EntityListeners(DishListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Dish extends BaseEntity {
     @Id

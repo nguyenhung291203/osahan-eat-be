@@ -1,18 +1,10 @@
 package com.develop.osahaneatbe.service.restaurant;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import jakarta.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.develop.osahaneatbe.constant.error.RestaurantErrorCode;
 import com.develop.osahaneatbe.constant.message.RestaurantErrorMessage;
 import com.develop.osahaneatbe.dto.request.RestaurantCreationRequest;
+import com.develop.osahaneatbe.dto.request.RestaurantFilterRequest;
+import com.develop.osahaneatbe.dto.response.PageResponse;
 import com.develop.osahaneatbe.dto.response.RestaurantResponse;
 import com.develop.osahaneatbe.entity.Restaurant;
 import com.develop.osahaneatbe.exception.ApiException;
@@ -20,10 +12,21 @@ import com.develop.osahaneatbe.exception.ValidateException;
 import com.develop.osahaneatbe.mapper.RestaurantMapper;
 import com.develop.osahaneatbe.repository.RestaurantRepository;
 import com.develop.osahaneatbe.service.media.MediaService;
-
+import com.develop.osahaneatbe.service.restaurant.redis.RestaurantRedisService;
+import com.develop.osahaneatbe.utils.ParamUtil;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +34,23 @@ import lombok.experimental.FieldDefaults;
 public class RestaurantServiceImpl implements RestaurantService {
     RestaurantRepository restaurantRepository;
     RestaurantMapper restaurantMapper;
+    RestaurantRedisService restaurantRedisService;
     MediaService mediaService;
 
     private Restaurant getRestaurantById(String id) {
         return restaurantRepository
                 .findById(id)
                 .orElseThrow(() -> new ApiException(RestaurantErrorCode.RESTAURANT_NOT_FOUND));
+    }
+
+    private PageResponse<RestaurantResponse> convertToPageResponse(Page<Restaurant> restaurantPage) {
+        return new PageResponse<>(
+                restaurantPage.getContent().stream()
+                        .map(restaurantMapper::toRestaurantResponse)
+                        .toList(),
+                restaurantPage.getTotalElements(),
+                restaurantPage.getTotalPages()
+        );
     }
 
     @Override
@@ -61,9 +75,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<RestaurantResponse> findAllRestaurants() {
-        return restaurantRepository.findAll().stream()
-                .map(restaurantMapper::toRestaurantResponse)
-                .toList();
+        List<RestaurantResponse> response = restaurantRedisService.find();
+        if (response == null) {
+            response = restaurantRepository.findAll().stream()
+                    .map(restaurantMapper::toRestaurantResponse)
+                    .toList();
+            restaurantRedisService.save(response);
+        }
+        return response;
     }
 
     @Override
@@ -84,5 +103,18 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setImage(image);
         restaurantRepository.save(restaurant);
         return Map.of();
+    }
+
+    @Override
+    public PageResponse<RestaurantResponse> findRestaurantByFilter(Map<String, Object> params, RestaurantFilterRequest request) {
+        Pageable pageable = ParamUtil.getPageable(params);
+        PageResponse<RestaurantResponse> response = restaurantRedisService.find(params, request);
+        if (response == null) {
+            Page<Restaurant> restaurantPage = restaurantRepository.findByFilterRequest(request, pageable);
+            response = convertToPageResponse(restaurantPage);
+            restaurantRedisService.save(params, request, response);
+        }
+
+        return response;
     }
 }

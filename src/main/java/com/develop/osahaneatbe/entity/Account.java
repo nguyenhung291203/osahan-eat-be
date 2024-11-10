@@ -1,11 +1,10 @@
 package com.develop.osahaneatbe.entity;
 
-import java.util.List;
-
 import jakarta.persistence.*;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Table(name = "accounts")
@@ -50,4 +49,7 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     List<Order> orders;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    List<FavoriteRestaurant> favoriteRestaurants;
 }

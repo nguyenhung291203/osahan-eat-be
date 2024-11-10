@@ -1,7 +1,9 @@
 package com.develop.osahaneatbe.controller;
 
 import com.develop.osahaneatbe.dto.request.RestaurantCreationRequest;
+import com.develop.osahaneatbe.dto.request.RestaurantFilterRequest;
 import com.develop.osahaneatbe.dto.response.ApiResponse;
+import com.develop.osahaneatbe.dto.response.PageResponse;
 import com.develop.osahaneatbe.dto.response.RestaurantResponse;
 import com.develop.osahaneatbe.service.restaurant.RestaurantService;
 import jakarta.validation.Valid;
@@ -43,8 +45,13 @@ public class RestaurantController {
         return ResponseEntity.ok(ApiResponse.ok(restaurantService.findRestaurantById(id)));
     }
 
-    @PostMapping("upload-image/{id}")
+    @PostMapping("/upload-image/{id}")
     public ResponseEntity<ApiResponse<Map<String, String>>> uploadImage(@PathVariable @Valid String id, @RequestParam("file") MultipartFile file) throws IOException {
         return ResponseEntity.ok(ApiResponse.ok(restaurantService.uploadImage(id, file)));
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<ApiResponse<PageResponse<RestaurantResponse>>> findRestaurantByFilter(@RequestBody RestaurantFilterRequest request, @RequestParam Map<String, Object> params) {
+        return ResponseEntity.ok(ApiResponse.ok(restaurantService.findRestaurantByFilter(params, request)));
     }
 }

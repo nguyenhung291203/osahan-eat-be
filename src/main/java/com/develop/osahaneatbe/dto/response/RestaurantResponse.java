@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.List;
 
 import static com.develop.osahaneatbe.constant.pattern.DateTimePatterns.TIME_PATTERN;
 
@@ -31,4 +32,5 @@ public class RestaurantResponse {
     Double longitude;
     BigDecimal rating;
     Long reviews;
+    List<CategoryRestaurant> categories;
 }
