@@ -1,17 +1,19 @@
 package com.develop.osahaneatbe.service.category.redis;
 
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
 import com.develop.osahaneatbe.dto.response.CategoryResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -33,10 +35,7 @@ public class CategoryRedisServiceImpl implements CategoryRedisService {
 
         String json = (String) redisTemplate.opsForValue().get(keyFindAllCategories);
         try {
-            return json != null
-                    ? redisObjectMapper.readValue(json, new TypeReference<>() {
-            })
-                    : null;
+            return json != null ? redisObjectMapper.readValue(json, new TypeReference<>() {}) : null;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

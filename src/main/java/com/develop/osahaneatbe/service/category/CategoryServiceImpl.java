@@ -1,5 +1,14 @@
 package com.develop.osahaneatbe.service.category;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.develop.osahaneatbe.constant.error.CategoryErrorCode;
 import com.develop.osahaneatbe.constant.message.CategoryErrorMessage;
 import com.develop.osahaneatbe.dto.request.CategoryCreationRequest;
@@ -12,16 +21,10 @@ import com.develop.osahaneatbe.repository.CategoryRepository;
 import com.develop.osahaneatbe.service.category.redis.CategoryRedisService;
 import com.develop.osahaneatbe.service.category.redis.CategoryRedisServiceImpl;
 import com.develop.osahaneatbe.service.media.MediaService;
-import jakarta.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -66,9 +69,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResponse> findAllCategories() {
-//        return categoryRepository.findAll().stream()
-//                .map(categoryMapper::toCategoryResponse)
-//                .toList();
+        //        return categoryRepository.findAll().stream()
+        //                .map(categoryMapper::toCategoryResponse)
+        //                .toList();
         List<CategoryResponse> response = categoryRedisService.findAllCategories();
         if (response == null) {
             response = categoryRepository.findAll().stream()

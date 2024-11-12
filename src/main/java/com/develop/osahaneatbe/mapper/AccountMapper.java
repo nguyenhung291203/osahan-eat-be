@@ -34,4 +34,11 @@ public abstract class AccountMapper {
             response.setAvatar(appConfig.getBaseUrl() + profile.getAvatar());
         }
     }
+
+    @AfterMapping
+    protected void mapAccountResponse(Account account, Profile profile, @MappingTarget AccountInfoResponse response) {
+        if (profile.getAvatar() != null && !profile.getAvatar().isEmpty()) {
+            response.setAvatar(appConfig.getBaseUrl() + profile.getAvatar());
+        }
+    }
 }

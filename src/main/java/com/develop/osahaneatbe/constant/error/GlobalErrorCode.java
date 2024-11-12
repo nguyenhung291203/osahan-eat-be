@@ -1,11 +1,13 @@
 package com.develop.osahaneatbe.constant.error;
 
+import org.springframework.http.HttpStatus;
+
 import com.develop.osahaneatbe.constant.message.GlobalErrorMessage;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter

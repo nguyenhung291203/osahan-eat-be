@@ -29,6 +29,8 @@ public class ManagerAndAdminApiEndpoints {
                 new ProtectedEndpoint(String.format("%s/dishes", apiPrefix), HttpMethod.POST, ADMIN_MANAGER_ROLES),
                 new ProtectedEndpoint(String.format("%s/restaurants", apiPrefix), HttpMethod.POST, ADMIN_MANAGER_ROLES),
                 new ProtectedEndpoint(
-                        String.format("%s/restaurants/upload-image/{id}", apiPrefix), HttpMethod.POST, ADMIN_MANAGER_ROLES));
+                        String.format("%s/restaurants/upload-image/{id}", apiPrefix),
+                        HttpMethod.POST,
+                        ADMIN_MANAGER_ROLES));
     }
 }

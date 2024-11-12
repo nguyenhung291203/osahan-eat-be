@@ -1,6 +1,6 @@
 package com.develop.osahaneatbe.dto.response;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -10,10 +10,15 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryRestaurant {
+public class DishRestaurantResponse {
     String id;
     String name;
     String description;
+    Boolean isFreeShip;
+    String timeShip;
+    BigDecimal price;
     String image;
-    List<DishCompact> dishes;
+    Boolean isActive;
+    CategoryCompact category;
+    RestaurantCompact restaurant;
 }

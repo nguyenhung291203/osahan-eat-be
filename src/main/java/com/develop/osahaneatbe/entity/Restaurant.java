@@ -1,12 +1,14 @@
 package com.develop.osahaneatbe.entity;
 
-import com.develop.osahaneatbe.listener.RestaurantListener;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.time.LocalTime;
 import java.util.List;
+
+import jakarta.persistence.*;
+
+import com.develop.osahaneatbe.listener.RestaurantListener;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "restaurants")

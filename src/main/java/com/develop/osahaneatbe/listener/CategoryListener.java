@@ -1,13 +1,16 @@
 package com.develop.osahaneatbe.listener;
 
+import jakarta.persistence.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.develop.osahaneatbe.entity.Category;
 import com.develop.osahaneatbe.service.category.redis.CategoryRedisService;
-import jakarta.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)

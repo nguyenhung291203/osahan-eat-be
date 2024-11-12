@@ -76,9 +76,8 @@ public class SpringSecurityConfig {
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(handling -> handling
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_FOUND))
-                );
+                .exceptionHandling(
+                        handling -> handling.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_FOUND)));
 
         return http.build();
     }

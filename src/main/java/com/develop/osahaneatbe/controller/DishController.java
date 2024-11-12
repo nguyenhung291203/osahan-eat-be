@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.develop.osahaneatbe.dto.request.DishCreationRequest;
 import com.develop.osahaneatbe.dto.response.ApiResponse;
 import com.develop.osahaneatbe.dto.response.DishResponse;
+import com.develop.osahaneatbe.dto.response.DishRestaurantResponse;
 import com.develop.osahaneatbe.service.dish.DishService;
 
 import lombok.AccessLevel;
@@ -49,5 +50,11 @@ public class DishController {
     public ResponseEntity<ApiResponse<Map<String, String>>> uploadImage(
             @RequestParam("file") MultipartFile file, @PathVariable @Valid String id) throws IOException {
         return ResponseEntity.ok(ApiResponse.ok(dishService.uploadImage(id, file)));
+    }
+
+    @GetMapping("/{id}/restaurants/{restaurantId}")
+    public ResponseEntity<ApiResponse<DishRestaurantResponse>> findDishByIdAndRestaurantId(
+            @PathVariable String id, @PathVariable String restaurantId) {
+        return ResponseEntity.ok(ApiResponse.ok(dishService.findDishByIdAndRestaurantId(id, restaurantId)));
     }
 }

@@ -1,10 +1,10 @@
 package com.develop.osahaneatbe.utils;
 
+import java.util.Map;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-import java.util.Map;
 
 public class ParamUtil {
     public static Pageable getPageable(Map<String, Object> params) {

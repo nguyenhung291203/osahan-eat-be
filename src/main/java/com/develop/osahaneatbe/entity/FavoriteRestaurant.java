@@ -1,6 +1,7 @@
 package com.develop.osahaneatbe.entity;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

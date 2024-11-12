@@ -3,19 +3,18 @@ package com.develop.osahaneatbe.exception;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.develop.osahaneatbe.constant.error.BaseErrorCode;
 import com.develop.osahaneatbe.constant.error.GlobalErrorCode;
 import com.develop.osahaneatbe.dto.response.ApiResponse;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -94,7 +93,6 @@ public class GlobalExceptionHandler {
         apiExceptionResponse.setMessage("Đã xảy ra lỗi không xác định: " + ex.getMessage());
         return ResponseEntity.status(errorCode.getHttpStatus()).body(apiExceptionResponse);
     }
-
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleNoHandlerFoundException(NoHandlerFoundException ex) {

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.develop.osahaneatbe.dto.request.DishCreationRequest;
 import com.develop.osahaneatbe.dto.response.DishCompact;
 import com.develop.osahaneatbe.dto.response.DishResponse;
+import com.develop.osahaneatbe.dto.response.DishRestaurantResponse;
 
 public interface DishService {
     Map<String, String> createDish(DishCreationRequest request);
@@ -20,4 +21,6 @@ public interface DishService {
     Map<String, String> uploadImage(String id, MultipartFile file) throws IOException;
 
     List<DishCompact> findAllDishesByRestaurantId(String restaurantId);
+
+    DishRestaurantResponse findDishByIdAndRestaurantId(String id, String restaurantId);
 }

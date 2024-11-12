@@ -1,13 +1,27 @@
 package com.develop.osahaneatbe.service.dish;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.develop.osahaneatbe.constant.error.CategoryErrorCode;
 import com.develop.osahaneatbe.constant.error.DishErrorCode;
+import com.develop.osahaneatbe.constant.error.RestaurantErrorCode;
 import com.develop.osahaneatbe.constant.message.DishErrorMessage;
 import com.develop.osahaneatbe.dto.request.DishCreationRequest;
 import com.develop.osahaneatbe.dto.response.DishCompact;
 import com.develop.osahaneatbe.dto.response.DishResponse;
+import com.develop.osahaneatbe.dto.response.DishRestaurantResponse;
 import com.develop.osahaneatbe.entity.Category;
 import com.develop.osahaneatbe.entity.Dish;
+import com.develop.osahaneatbe.entity.MenuRestaurant;
+import com.develop.osahaneatbe.entity.Restaurant;
 import com.develop.osahaneatbe.exception.ApiException;
 import com.develop.osahaneatbe.exception.ValidateException;
 import com.develop.osahaneatbe.mapper.DishMapper;
@@ -16,17 +30,10 @@ import com.develop.osahaneatbe.repository.DishRepository;
 import com.develop.osahaneatbe.repository.RestaurantRepository;
 import com.develop.osahaneatbe.service.dish.redis.DishRedisService;
 import com.develop.osahaneatbe.service.media.MediaService;
-import jakarta.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +74,9 @@ public class DishServiceImpl implements DishService {
     public List<DishResponse> findAllDishes() {
         List<DishResponse> response = dishRedisService.findAllDishes();
         if (response == null) {
-            response = dishRepository.findAll().stream().map(dishMapper::toDishResponse).toList();
+            response = dishRepository.findAll().stream()
+                    .map(dishMapper::toDishResponse)
+                    .toList();
             dishRedisService.saveAllDishes(response);
         }
         return response;
@@ -96,5 +105,16 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<DishCompact> findAllDishesByRestaurantId(String restaurantId) {
         return List.of();
+    }
+
+    @Override
+    public DishRestaurantResponse findDishByIdAndRestaurantId(String id, String restaurantId) {
+        Dish dish = getDishById(id);
+        Restaurant restaurant = dish.getCategory().getMenuRestaurants().stream()
+                .map(MenuRestaurant::getRestaurant)
+                .filter(res -> res.getId().equals(restaurantId))
+                .findFirst()
+                .orElseThrow(() -> new ApiException(RestaurantErrorCode.RESTAURANT_NOT_FOUND));
+        return dishMapper.toDishRestaurantResponse(dish, restaurant);
     }
 }

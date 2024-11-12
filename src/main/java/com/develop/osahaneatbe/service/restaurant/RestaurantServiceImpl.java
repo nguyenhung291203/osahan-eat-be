@@ -1,5 +1,17 @@
 package com.develop.osahaneatbe.service.restaurant;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.develop.osahaneatbe.constant.error.RestaurantErrorCode;
 import com.develop.osahaneatbe.constant.message.RestaurantErrorMessage;
 import com.develop.osahaneatbe.dto.request.RestaurantCreationRequest;
@@ -14,19 +26,10 @@ import com.develop.osahaneatbe.repository.RestaurantRepository;
 import com.develop.osahaneatbe.service.media.MediaService;
 import com.develop.osahaneatbe.service.restaurant.redis.RestaurantRedisService;
 import com.develop.osahaneatbe.utils.ParamUtil;
-import jakarta.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +52,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                         .map(restaurantMapper::toRestaurantResponse)
                         .toList(),
                 restaurantPage.getTotalElements(),
-                restaurantPage.getTotalPages()
-        );
+                restaurantPage.getTotalPages());
     }
 
     @Override
@@ -106,7 +108,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public PageResponse<RestaurantResponse> findRestaurantByFilter(Map<String, Object> params, RestaurantFilterRequest request) {
+    public PageResponse<RestaurantResponse> findRestaurantByFilter(
+            Map<String, Object> params, RestaurantFilterRequest request) {
         Pageable pageable = ParamUtil.getPageable(params);
         PageResponse<RestaurantResponse> response = restaurantRedisService.find(params, request);
         if (response == null) {

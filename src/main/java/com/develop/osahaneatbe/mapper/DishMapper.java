@@ -4,7 +4,9 @@ import com.develop.osahaneatbe.config.AppConfig;
 import com.develop.osahaneatbe.dto.request.DishCreationRequest;
 import com.develop.osahaneatbe.dto.response.DishCompact;
 import com.develop.osahaneatbe.dto.response.DishResponse;
+import com.develop.osahaneatbe.dto.response.DishRestaurantResponse;
 import com.develop.osahaneatbe.entity.Dish;
+import com.develop.osahaneatbe.entity.Restaurant;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,6 +21,17 @@ public abstract class DishMapper {
     public abstract Dish toDish(DishCreationRequest request);
 
     public abstract DishCompact toDishCompact(Dish dish);
+
+    @Mapping(source = "dish.id", target = "id")
+    @Mapping(source = "dish.name", target = "name")
+    @Mapping(source = "dish.description", target = "description")
+    @Mapping(source = "dish.isFreeShip", target = "isFreeShip")
+    @Mapping(source = "dish.timeShip", target = "timeShip")
+    @Mapping(source = "dish.price", target = "price")
+    @Mapping(source = "dish.image", target = "image")
+    @Mapping(source = "dish.isActive", target = "isActive")
+    @Mapping(source = "restaurant", target = "restaurant")
+    public abstract DishRestaurantResponse toDishRestaurantResponse(Dish dish, Restaurant restaurant);
 
     @Mapping(target = "restaurants", source = "category.menuRestaurants")
     public abstract DishResponse toDishResponse(Dish dish);
@@ -35,5 +48,17 @@ public abstract class DishMapper {
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             response.setImage(appConfig.getBaseUrl() + request.getImage());
         }
+    }
+
+    @AfterMapping
+    protected void mapDishRestaurantResponse(
+            Dish dish, Restaurant restaurant, @MappingTarget DishRestaurantResponse response) {
+        if (dish.getImage() != null && !dish.getImage().isEmpty()) {
+            response.setImage(appConfig.getBaseUrl() + dish.getImage());
+        }
+        if (restaurant.getImage() != null && !restaurant.getImage().isEmpty()) {
+            response.getRestaurant().setImage(appConfig.getBaseUrl() + dish.getImage());
+        }
+
     }
 }
