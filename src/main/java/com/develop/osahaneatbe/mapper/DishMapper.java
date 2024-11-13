@@ -1,5 +1,11 @@
 package com.develop.osahaneatbe.mapper;
 
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.develop.osahaneatbe.config.AppConfig;
 import com.develop.osahaneatbe.dto.request.DishCreationRequest;
 import com.develop.osahaneatbe.dto.response.DishCompact;
@@ -7,11 +13,6 @@ import com.develop.osahaneatbe.dto.response.DishResponse;
 import com.develop.osahaneatbe.dto.response.DishRestaurantResponse;
 import com.develop.osahaneatbe.entity.Dish;
 import com.develop.osahaneatbe.entity.Restaurant;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")
 public abstract class DishMapper {
@@ -59,6 +60,5 @@ public abstract class DishMapper {
         if (restaurant.getImage() != null && !restaurant.getImage().isEmpty()) {
             response.getRestaurant().setImage(appConfig.getBaseUrl() + dish.getImage());
         }
-
     }
 }

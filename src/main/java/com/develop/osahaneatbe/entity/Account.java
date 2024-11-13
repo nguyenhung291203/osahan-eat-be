@@ -1,11 +1,10 @@
 package com.develop.osahaneatbe.entity;
 
-import java.util.List;
-
 import jakarta.persistence.*;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Table(name = "accounts")
@@ -29,7 +28,7 @@ public class Account {
     @Column(name = "is_active")
     boolean isActive;
 
-    @Column(name = "faceboo_account_id")
+    @Column(name = "facebook_account_id")
     String facebookAccountId;
 
     @Column(name = "google_account_id")
@@ -53,4 +52,7 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     List<FavoriteRestaurant> favoriteRestaurants;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    Cart cart;
 }

@@ -16,7 +16,7 @@ public class DishResponse extends BaseResponse {
     String name;
     String description;
     Boolean isFreeShip;
-    String timeShip;
+    BigDecimal timeShip;
     BigDecimal price;
     String image;
     Boolean isActive;

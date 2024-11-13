@@ -52,6 +52,12 @@ public class DishServiceImpl implements DishService {
                 .orElseThrow(() -> new ApiException(CategoryErrorCode.CATEGORY_NOT_FOUND));
     }
 
+    private Restaurant getRestaurantById(String id) {
+        return restaurantRepository
+                .findById(id)
+                .orElseThrow(() -> new ApiException(RestaurantErrorCode.RESTAURANT_NOT_FOUND));
+    }
+
     private Dish getDishById(String id) {
         return dishRepository.findById(id).orElseThrow(() -> new ApiException(DishErrorCode.DISH_NOT_FOUND));
     }

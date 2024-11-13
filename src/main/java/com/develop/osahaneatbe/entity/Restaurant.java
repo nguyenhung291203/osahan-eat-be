@@ -62,4 +62,7 @@ public class Restaurant extends BaseEntity {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     List<FavoriteRestaurant> favoriteRestaurants;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    List<CartItem> cartItems;
 }

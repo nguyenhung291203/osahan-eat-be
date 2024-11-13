@@ -1,14 +1,13 @@
 package com.develop.osahaneatbe.constant.api;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.develop.osahaneatbe.constant.code.RoleCode;
+import com.develop.osahaneatbe.dto.response.ProtectedEndpoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
-import com.develop.osahaneatbe.constant.code.RoleCode;
-import com.develop.osahaneatbe.dto.response.ProtectedEndpoint;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class AllRoleApiEndpoints {
@@ -24,6 +23,8 @@ public class AllRoleApiEndpoints {
                 new ProtectedEndpoint(String.format("%s/auth/logout", apiPrefix), HttpMethod.POST, ALL_ROLES),
                 new ProtectedEndpoint(String.format("%s/accounts/me", apiPrefix), HttpMethod.GET, ALL_ROLES),
                 new ProtectedEndpoint(
-                        String.format("%s/accounts/{id}/upload-avatar", apiPrefix), HttpMethod.POST, ALL_ROLES));
+                        String.format("%s/accounts/{id}/upload-avatar", apiPrefix), HttpMethod.POST, ALL_ROLES),
+                new ProtectedEndpoint(
+                        String.format("%s/cart/me", apiPrefix), HttpMethod.GET, ALL_ROLES));
     }
 }

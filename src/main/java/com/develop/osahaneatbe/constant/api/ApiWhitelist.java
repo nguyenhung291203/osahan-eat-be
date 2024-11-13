@@ -2,11 +2,15 @@ package com.develop.osahaneatbe.constant.api;
 
 import java.util.Arrays;
 import java.util.List;
+
 import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+
 import com.develop.osahaneatbe.dto.response.ProtectedEndpoint;
+
 import lombok.Getter;
 
 @Component
@@ -29,24 +33,22 @@ public class ApiWhitelist {
                 new ProtectedEndpoint(String.format("%s/categories/{id}", apiPrefix), HttpMethod.GET),
                 new ProtectedEndpoint(String.format("%s/dishes", apiPrefix), HttpMethod.GET),
                 new ProtectedEndpoint(String.format("%s/dishes/{id}", apiPrefix), HttpMethod.GET),
-                new ProtectedEndpoint(String.format("%s/dishes/{id}/restaurants/{restaurantId}", apiPrefix), HttpMethod.GET),
+                new ProtectedEndpoint(
+                        String.format("%s/dishes/{id}/restaurants/{restaurantId}", apiPrefix), HttpMethod.GET),
                 new ProtectedEndpoint(String.format("%s/restaurants", apiPrefix), HttpMethod.GET),
                 new ProtectedEndpoint(String.format("%s/restaurants/{id}", apiPrefix), HttpMethod.GET),
-                new ProtectedEndpoint(String.format("%s/restaurants/search", apiPrefix), HttpMethod.POST)
-        );
+                new ProtectedEndpoint(String.format("%s/restaurants/search", apiPrefix), HttpMethod.POST));
     }
 
     public boolean isWhitelisted(String path, HttpMethod method) {
-        return whiteListUrls.stream()
-                .anyMatch(url -> {
-                    String regex = createRegex(url.getUrl());
-                    return path.matches(regex) && method.equals(url.getHttpMethod());
-                });
+        return whiteListUrls.stream().anyMatch(url -> {
+            String regex = createRegex(url.getUrl());
+            return path.matches(regex) && method.equals(url.getHttpMethod());
+        });
     }
 
     private String createRegex(String url) {
-        return url
-                .replace("{id}", getIdRegex())
+        return url.replace("{id}", getIdRegex())
                 .replace("{restaurantId}", getIdRegex())
                 .replace("**", ".*");
     }

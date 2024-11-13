@@ -1,14 +1,12 @@
 package com.develop.osahaneatbe.entity;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import jakarta.persistence.*;
-
 import com.develop.osahaneatbe.listener.DishListener;
-
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "dishes")
@@ -34,7 +32,7 @@ public class Dish extends BaseEntity {
     Boolean isFreeShip;
 
     @Column(name = "time_ship")
-    String timeShip;
+    BigDecimal timeShip;
 
     BigDecimal price;
 
@@ -52,4 +50,7 @@ public class Dish extends BaseEntity {
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
     List<OrderDetail> orderDetails;
+
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
+    List<CartItem> cartItems;
 }
