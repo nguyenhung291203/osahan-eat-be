@@ -1,18 +1,7 @@
 package com.develop.osahaneatbe.service.restaurant;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import jakarta.transaction.Transactional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.develop.osahaneatbe.constant.error.RestaurantErrorCode;
+import com.develop.osahaneatbe.constant.key.CacheKey;
 import com.develop.osahaneatbe.constant.message.RestaurantErrorMessage;
 import com.develop.osahaneatbe.dto.request.RestaurantCreationRequest;
 import com.develop.osahaneatbe.dto.request.RestaurantFilterRequest;
@@ -24,12 +13,22 @@ import com.develop.osahaneatbe.exception.ValidateException;
 import com.develop.osahaneatbe.mapper.RestaurantMapper;
 import com.develop.osahaneatbe.repository.RestaurantRepository;
 import com.develop.osahaneatbe.service.media.MediaService;
-import com.develop.osahaneatbe.service.restaurant.redis.RestaurantRedisService;
 import com.develop.osahaneatbe.utils.ParamUtil;
-
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +36,6 @@ import lombok.experimental.FieldDefaults;
 public class RestaurantServiceImpl implements RestaurantService {
     RestaurantRepository restaurantRepository;
     RestaurantMapper restaurantMapper;
-    RestaurantRedisService restaurantRedisService;
     MediaService mediaService;
 
     private Restaurant getRestaurantById(String id) {
@@ -56,6 +54,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @CacheEvict(value = CacheKey.RESTAURANTS_CACHE, allEntries = true)
     public Map<String, String> createRestaurant(RestaurantCreationRequest request) {
         Map<String, String> errors = new HashMap<>();
         if (restaurantRepository.existsByTitle(request.getTitle())) {
@@ -76,18 +75,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Cacheable(value = CacheKey.RESTAURANTS_CACHE)
     public List<RestaurantResponse> findAllRestaurants() {
-        List<RestaurantResponse> response = restaurantRedisService.find();
-        if (response == null) {
-            response = restaurantRepository.findAll().stream()
-                    .map(restaurantMapper::toRestaurantResponse)
-                    .toList();
-            restaurantRedisService.save(response);
-        }
-        return response;
+        return restaurantRepository.findAll().stream()
+                .map(restaurantMapper::toRestaurantResponse)
+                .toList();
     }
 
     @Override
+    @Cacheable(value = CacheKey.RESTAURANTS_CACHE, key = "#id")
     public RestaurantResponse findRestaurantById(String id) {
         Restaurant restaurant = getRestaurantById(id);
         return restaurantMapper.toRestaurantResponse(restaurant);
@@ -95,6 +91,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
+    @CacheEvict(value = CacheKey.RESTAURANTS_CACHE, allEntries = true)
     public Map<String, String> uploadImage(String id, MultipartFile file) throws IOException {
         Restaurant restaurant = getRestaurantById(id);
         String image = restaurant.getImage();
@@ -108,16 +105,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Cacheable(value = CacheKey.RESTAURANTS_CACHE, key = "{#params, #request}")
     public PageResponse<RestaurantResponse> findRestaurantByFilter(
             Map<String, Object> params, RestaurantFilterRequest request) {
         Pageable pageable = ParamUtil.getPageable(params);
-        PageResponse<RestaurantResponse> response = restaurantRedisService.find(params, request);
-        if (response == null) {
-            Page<Restaurant> restaurantPage = restaurantRepository.findByFilterRequest(request, pageable);
-            response = convertToPageResponse(restaurantPage);
-            restaurantRedisService.save(params, request, response);
-        }
-
-        return response;
+        Page<Restaurant> restaurantPage = restaurantRepository.findByFilterRequest(request, pageable);
+        return convertToPageResponse(restaurantPage);
     }
+
 }

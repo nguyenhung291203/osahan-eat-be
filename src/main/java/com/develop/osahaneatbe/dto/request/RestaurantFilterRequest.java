@@ -28,4 +28,14 @@ public class RestaurantFilterRequest {
 
     @Builder.Default
     Double distance = 10.0;
+
+    @Override
+    public String toString() {
+        return "accountId=" + accountId + ",latitude="
+                + latitude + ",longitude="
+                + longitude + ",distance="
+                + distance + ",sortBy="
+                + sortBy + ",sortDir="
+                + sortDir;
+    }
 }

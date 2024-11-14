@@ -1,13 +1,10 @@
 package com.develop.osahaneatbe.entity;
 
-import java.util.List;
-
 import jakarta.persistence.*;
-
-import com.develop.osahaneatbe.listener.CategoryListener;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -16,9 +13,8 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
-@EntityListeners(CategoryListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category extends BaseEntity {
+public class Category extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;

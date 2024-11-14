@@ -2,6 +2,7 @@ package com.develop.osahaneatbe.dto.response;
 
 import static com.develop.osahaneatbe.constant.pattern.DateTimePatterns.TIME_PATTERN;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
@@ -16,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RestaurantResponse {
+public class RestaurantResponse implements Serializable {
     String id;
     String title;
     String subtitle;

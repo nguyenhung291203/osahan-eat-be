@@ -24,7 +24,8 @@ public class AllRoleApiEndpoints {
                 new ProtectedEndpoint(String.format("%s/accounts/me", apiPrefix), HttpMethod.GET, ALL_ROLES),
                 new ProtectedEndpoint(
                         String.format("%s/accounts/{id}/upload-avatar", apiPrefix), HttpMethod.POST, ALL_ROLES),
-                new ProtectedEndpoint(
-                        String.format("%s/cart/me", apiPrefix), HttpMethod.GET, ALL_ROLES));
+                new ProtectedEndpoint(String.format("%s/cart/me", apiPrefix), HttpMethod.GET, ALL_ROLES),
+                new ProtectedEndpoint(String.format("%s/cart", apiPrefix), HttpMethod.POST, ALL_ROLES),
+                new ProtectedEndpoint(String.format("%s/cart/{id}", apiPrefix), HttpMethod.DELETE, ALL_ROLES));
     }
 }

@@ -1,27 +1,34 @@
 package com.develop.osahaneatbe.mapper;
 
-import com.develop.osahaneatbe.dto.response.CartItemResponse;
-import com.develop.osahaneatbe.dto.response.CartResponse;
-import com.develop.osahaneatbe.entity.Cart;
+import com.develop.osahaneatbe.config.AppConfig;
+import com.develop.osahaneatbe.entity.CartItem;
+import com.develop.osahaneatbe.entity.Dish;
+import com.develop.osahaneatbe.entity.Restaurant;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import com.develop.osahaneatbe.dto.response.CartItemResponse;
 
 @Mapper(componentModel = "spring")
 public abstract class CartMapper {
     @Autowired
-    protected CartItemMapper cartItemMapper;
+    protected AppConfig appConfig;
 
-    public abstract CartResponse toCartResponse(Cart cart);
+    @Autowired
+    protected DishMapper dishMapper;
+
+    @Autowired
+    protected RestaurantMapper restaurantMapper;
+
+    public abstract CartItemResponse toCartItemResponse(CartItem cartItem);
 
     @AfterMapping
-    protected void mapCartResponse(Cart cart, @MappingTarget CartResponse response) {
-        if (cart.getCartItems() != null) {
-            List<CartItemResponse> items = cart.getCartItems().stream().map(item -> cartItemMapper.toCartItemResponse(item)).toList();
-            response.setItems(items);
-        }
+    protected void mapCartItemResponse(CartItem cartItem, @MappingTarget CartItemResponse response) {
+        Dish dish = cartItem.getDish();
+        Restaurant restaurant = cartItem.getRestaurant();
+        response.setDish(dishMapper.toDishCompact(dish));
+        response.setRestaurant(restaurantMapper.toRestaurantCompact(restaurant));
     }
 }

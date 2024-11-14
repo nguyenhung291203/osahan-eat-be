@@ -1,7 +1,7 @@
 package com.develop.osahaneatbe.constant.message;
 
 public class RestaurantErrorMessage {
-
+    public static final String ID_NOT_BLANK = "ID nhà hàng không được để trống.";
     public static final String TITLE_REQUIRED = "Tiêu đề nhà hàng là bắt buộc.";
     public static final String TITLE_INVALID_CHARACTERS = "Tiêu đề không được chứa ký tự đặc biệt.";
     public static final String ADDRESS_REQUIRED = "Địa chỉ nhà hàng là bắt buộc.";

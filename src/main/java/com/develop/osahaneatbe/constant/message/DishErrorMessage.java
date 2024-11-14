@@ -10,4 +10,5 @@ public class DishErrorMessage {
     public static final String DISH_NOT_FOUND = "Món ăn không tồn tại.";
     public static final String PRICE_NOT_NULL = "Giá món ăn không được để trống.";
     public static final String PRICE_NEGATIVE = "Giá món ăn không được nhỏ hơn 0.";
+    public static final String ID_NOT_BLANK = "ID món ăn không được để trống.";
 }

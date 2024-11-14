@@ -5,8 +5,6 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
-import com.develop.osahaneatbe.listener.RestaurantListener;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,7 +15,6 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
-@EntityListeners(RestaurantListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Restaurant extends BaseEntity {
     @Id

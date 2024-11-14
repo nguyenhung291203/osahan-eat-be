@@ -1,6 +1,5 @@
 package com.develop.osahaneatbe.entity;
 
-import com.develop.osahaneatbe.listener.CategoryListener;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +11,6 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
-@EntityListeners(CategoryListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartItem {
     @Id
@@ -20,15 +18,15 @@ public class CartItem {
     String id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
-    Cart cart;
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    Account account;
 
     @ManyToOne
-    @JoinColumn(name = "dish_id")
+    @JoinColumn(name = "dish_id", referencedColumnName = "id")
     Dish dish;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
     Restaurant restaurant;
 
     Long quantity;

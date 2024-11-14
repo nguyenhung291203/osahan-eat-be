@@ -53,6 +53,6 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     List<FavoriteRestaurant> favoriteRestaurants;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    Cart cart;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    List<CartItem> items;
 }

@@ -347,7 +347,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\" Phở  \",\r\n    \"description\":\"Phở là một trong những món ăn đặc trưng và nổi tiếng nhất của ẩm thực Việt Nam\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Lẩu Đồ Nướng\",\r\n    \"description\": \"Danh mục kết hợp giữa lẩu và đồ nướng, cho phép thực khách thưởng thức cả hai.\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -499,8 +499,264 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "find dish by id and restaurant-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/dishes/64768584-e4d1-4b8f-9fd9-a149483c1aac/restaurants/2f486405-28bb-416f-9e9a-73333c1bf48f",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dishes",
+								"64768584-e4d1-4b8f-9fd9-a149483c1aac",
+								"restaurants",
+								"2f486405-28bb-416f-9e9a-73333c1bf48f"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "Restaurant",
+			"item": [
+				{
+					"name": "create restaurant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Quán Nướng Nướng Bống\",\r\n    \"subtitle\": \"Món nướng thơm ngon\",\r\n    \"address\": \"88 Đường Ngọc Khánh, Ba Đình, Hà Nội\",\r\n    \"description\": \"Đồ nướng đa dạng với hương vị đặc trưng và không gian thoải mái.\",\r\n    \"isFreeShip\": true,\r\n    \"isActive\": true,\r\n    \"openTime\": \"17:00\",\r\n    \"closeTime\": \"23:00\",\r\n    \"latitude\": 21.023956,\r\n    \"longitude\": 105.834925\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/restaurants",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all restaurants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/restaurants",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find restaurant by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/restaurants/20b3db47-9afa-45cb-adbc-7236229b1e92",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"restaurants",
+								"20b3db47-9afa-45cb-adbc-7236229b1e92"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1ef98d53-244c-4b40-9ae1-8f527003af89"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/restaurants/upload-image/2f486405-28bb-416f-9e9a-73333c1bf48f",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"restaurants",
+								"upload-image",
+								"2f486405-28bb-416f-9e9a-73333c1bf48f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search restaurant",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "find cart me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cart/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cart",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add item to cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dishId\": \"64768584-e4d1-4b8f-9fd9-a149483c1aac\",\r\n    \"restaurantId\": \"2f486405-28bb-416f-9e9a-73333c1bf48f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/cart",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove cart item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dishId\": \"64768584-e4d1-4b8f-9fd9-a149483c1aac\",\r\n    \"restaurantId\": \"2f486405-28bb-416f-9e9a-73333c1bf48f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/cart",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	],
 	"event": [
