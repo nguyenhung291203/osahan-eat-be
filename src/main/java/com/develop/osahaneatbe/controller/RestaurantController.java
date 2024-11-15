@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.develop.osahaneatbe.dto.request.RestaurantCreationRequest;
 import com.develop.osahaneatbe.dto.request.RestaurantFilterRequest;
 import com.develop.osahaneatbe.dto.response.ApiResponse;
+import com.develop.osahaneatbe.dto.response.CustomUserDetails;
 import com.develop.osahaneatbe.dto.response.PageResponse;
 import com.develop.osahaneatbe.dto.response.RestaurantResponse;
 import com.develop.osahaneatbe.service.restaurant.RestaurantService;
@@ -58,5 +60,17 @@ public class RestaurantController {
     public ResponseEntity<ApiResponse<PageResponse<RestaurantResponse>>> findRestaurantByFilter(
             @RequestBody RestaurantFilterRequest request, @RequestParam Map<String, Object> params) {
         return ResponseEntity.ok(ApiResponse.ok(restaurantService.findRestaurantByFilter(params, request)));
+    }
+
+    @GetMapping("/favorite")
+    public ResponseEntity<ApiResponse<List<RestaurantResponse>>> findFavoriteRestaurants(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(ApiResponse.ok(restaurantService.findFavorite(userDetails.getId())));
+    }
+
+    @PostMapping("/favorite/{id}")
+    public ResponseEntity<ApiResponse<Map<String, String>>> changeFavoriteRestaurant(
+            @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable String id) {
+        return ResponseEntity.ok(ApiResponse.ok(restaurantService.changeFavorite(userDetails.getId(), id)));
     }
 }

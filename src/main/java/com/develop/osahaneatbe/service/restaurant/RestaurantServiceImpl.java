@@ -1,23 +1,12 @@
 package com.develop.osahaneatbe.service.restaurant;
 
-import com.develop.osahaneatbe.constant.error.RestaurantErrorCode;
-import com.develop.osahaneatbe.constant.key.CacheKey;
-import com.develop.osahaneatbe.constant.message.RestaurantErrorMessage;
-import com.develop.osahaneatbe.dto.request.RestaurantCreationRequest;
-import com.develop.osahaneatbe.dto.request.RestaurantFilterRequest;
-import com.develop.osahaneatbe.dto.response.PageResponse;
-import com.develop.osahaneatbe.dto.response.RestaurantResponse;
-import com.develop.osahaneatbe.entity.Restaurant;
-import com.develop.osahaneatbe.exception.ApiException;
-import com.develop.osahaneatbe.exception.ValidateException;
-import com.develop.osahaneatbe.mapper.RestaurantMapper;
-import com.develop.osahaneatbe.repository.RestaurantRepository;
-import com.develop.osahaneatbe.service.media.MediaService;
-import com.develop.osahaneatbe.utils.ParamUtil;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import jakarta.transaction.Transactional;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -25,10 +14,29 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.develop.osahaneatbe.constant.error.AccountErrorCode;
+import com.develop.osahaneatbe.constant.error.RestaurantErrorCode;
+import com.develop.osahaneatbe.constant.key.CacheKey;
+import com.develop.osahaneatbe.constant.message.RestaurantErrorMessage;
+import com.develop.osahaneatbe.dto.request.RestaurantCreationRequest;
+import com.develop.osahaneatbe.dto.request.RestaurantFilterRequest;
+import com.develop.osahaneatbe.dto.response.PageResponse;
+import com.develop.osahaneatbe.dto.response.RestaurantResponse;
+import com.develop.osahaneatbe.entity.Account;
+import com.develop.osahaneatbe.entity.FavoriteRestaurant;
+import com.develop.osahaneatbe.entity.Restaurant;
+import com.develop.osahaneatbe.exception.ApiException;
+import com.develop.osahaneatbe.exception.ValidateException;
+import com.develop.osahaneatbe.mapper.RestaurantMapper;
+import com.develop.osahaneatbe.repository.AccountRepository;
+import com.develop.osahaneatbe.repository.FavoriteRestaurantRepository;
+import com.develop.osahaneatbe.repository.RestaurantRepository;
+import com.develop.osahaneatbe.service.media.MediaService;
+import com.develop.osahaneatbe.utils.ParamUtil;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +44,13 @@ import java.util.Map;
 public class RestaurantServiceImpl implements RestaurantService {
     RestaurantRepository restaurantRepository;
     RestaurantMapper restaurantMapper;
+    AccountRepository accountRepository;
     MediaService mediaService;
+    FavoriteRestaurantRepository favoriteRestaurantRepository;
+
+    private Account getAccountById(String id) {
+        return accountRepository.findById(id).orElseThrow(() -> new ApiException(AccountErrorCode.ACCOUNT_NOT_EXISTED));
+    }
 
     private Restaurant getRestaurantById(String id) {
         return restaurantRepository
@@ -83,6 +97,35 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Cacheable(value = CacheKey.FAVORITE_CACHE, key = "#accountId")
+    public List<RestaurantResponse> findFavorite(String accountId) {
+        Account account = getAccountById(accountId);
+
+        return account.getFavoriteRestaurants().stream()
+                .map(favorite -> restaurantMapper.toRestaurantResponse(favorite.getRestaurant()))
+                .toList();
+    }
+
+    @Override
+    @CacheEvict(value = CacheKey.FAVORITE_CACHE, key = "#accountId")
+    public Map<String, String> changeFavorite(String accountId, String restaurantId) {
+        Account account = getAccountById(accountId);
+        Restaurant restaurant = getRestaurantById(restaurantId);
+        FavoriteRestaurant favorite = favoriteRestaurantRepository.findFavoriteRestaurantByAccountIdAndRestaurantId(
+                account.getId(), restaurantId);
+        if (favorite != null) {
+            favoriteRestaurantRepository.delete(favorite);
+            return Map.of();
+        }
+        FavoriteRestaurant favoriteRestaurant = FavoriteRestaurant.builder()
+                .account(account)
+                .restaurant(restaurant)
+                .build();
+        favoriteRestaurantRepository.save(favoriteRestaurant);
+        return Map.of();
+    }
+
+    @Override
     @Cacheable(value = CacheKey.RESTAURANTS_CACHE, key = "#id")
     public RestaurantResponse findRestaurantById(String id) {
         Restaurant restaurant = getRestaurantById(id);
@@ -112,5 +155,4 @@ public class RestaurantServiceImpl implements RestaurantService {
         Page<Restaurant> restaurantPage = restaurantRepository.findByFilterRequest(request, pageable);
         return convertToPageResponse(restaurantPage);
     }
-
 }

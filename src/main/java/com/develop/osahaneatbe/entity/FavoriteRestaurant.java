@@ -6,7 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "favvorite_restaurants")
+@Table(name = "favorite_restaurants", uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_id", "account_id"}))
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
